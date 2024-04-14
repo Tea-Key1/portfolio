@@ -29,7 +29,7 @@ export default function Experience() {
         loader.setDRACOLoader(dracoLoader)
     }) as Model
 
-    const tothink = useLoader(GLTFLoader, "/models/tothink_02.glb", (loader): void => {
+    const tothink = useLoader(GLTFLoader, "/models/tothink_03.glb", (loader): void => {
         const dracoLoader = new DRACOLoader()
         dracoLoader.setDecoderPath('/draco/gltf/')
         loader.setDRACOLoader(dracoLoader)
@@ -55,6 +55,8 @@ export default function Experience() {
     const panel = useRef<THREE.Mesh>(null!)
     const desktop = useRef<THREE.Mesh>(null!)
     const mobile = useRef<THREE.Mesh>(null!)
+    const object1 = useRef<THREE.Mesh>(null!)
+    const object2 = useRef<THREE.Mesh>(null!)
 
     const icons = [
         "04LinkedIn", "04Slack", "04app_store", "04apple", "04css", "04discord", "04dropbox",
@@ -134,6 +136,8 @@ export default function Experience() {
         screw3.current.rotation.y = clock.getElapsedTime() * 20
         screw4.current.rotation.y = clock.getElapsedTime() * 20
         entityManager.update(delta)
+        object1.current.position.y = Math.sin(clock.getElapsedTime()*2)/5
+        object2.current.position.y = Math.sin(clock.getElapsedTime()*2)/5
         dronePhysics.current?.setNextKinematicTranslation({ x: vehicle.position.x, y: 0, z: vehicle.position.z })
     })
 
@@ -237,6 +241,64 @@ export default function Experience() {
                             <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
                         </mesh>
                     </RigidBody>
+                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
+                        <mesh
+                            geometry={tothink.nodes["03hand"].geometry}
+                            position={tothink.nodes["03hand"].position}
+                        >
+                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
+                        </mesh>
+                    </RigidBody>
+                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
+                        <mesh
+                            geometry={tothink.nodes["03red"].geometry}
+                            position={tothink.nodes["03red"].position}
+                        >
+                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
+                        </mesh>
+                    </RigidBody>
+                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
+                        <mesh
+                            geometry={tothink.nodes["03yellow"].geometry}
+                            position={tothink.nodes["03yellow"].position}
+                        >
+                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
+                        </mesh>
+                    </RigidBody>
+                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
+                        <mesh
+                            geometry={tothink.nodes["03white"].geometry}
+                            position={tothink.nodes["03white"].position}
+                        >
+                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
+                        </mesh>
+                    </RigidBody>
+                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
+                        <mesh
+                            ref={object1}
+                            geometry={tothink.nodes["03object1"].geometry}
+                            position={tothink.nodes["03object1"].position}
+                        >
+                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
+                        </mesh>
+                    </RigidBody>
+                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
+                        <mesh
+                            ref={object2}
+                            geometry={tothink.nodes["03object2"].geometry}
+                            position={tothink.nodes["03object2"].position}
+                        >
+                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
+                        </mesh>
+                    </RigidBody>
+                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
+                        <mesh
+                            geometry={tothink.nodes["03cup"].geometry}
+                            position={tothink.nodes["03cup"].position}
+                        >
+                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
+                        </mesh>
+                    </RigidBody>
 
                     {icons.map(icon => (
                         <Float
@@ -254,7 +316,7 @@ export default function Experience() {
 
             </Physics>
 
-            <Environment preset="city" />
+            <Environment preset="forest" />
         </group>
     )
 }

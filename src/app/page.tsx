@@ -11,11 +11,6 @@ import Article from "./article";
 
 export default function Home() {
   const { progress } = useProgress();
-  const tl = gsap.timeline()
-
-  // useEffect(() => {
-  //   tl.from("#menu", { duration: 10, width: 0 }).play()
-  // }, [])
 
   return (
     <Fragment>
@@ -34,8 +29,10 @@ export default function Home() {
             </Canvas>
           </div>
           <div className="w-full h-auto fixed z-[10] p-0 m-0">
-            <div id="menu" className={`w-80  h-[100dvh] absolute top-0 left-0 bg-white bg-opacity-35`} >text</div>
-            <div id="toggle" className={`w-20  h-[100dvh] absolute top-0 right-0 bg-white bg-opacity-35`} >text</div>
+            <div id="menu" className={`w-80  h-[100dvh] absolute top-0 right-0 bg-white bg-opacity-35`} >text</div>
+            <div id="toggle" className={`w-20  h-[100dvh] absolute top-0 left-0 bg-white bg-opacity-35`} >
+              <div className="w-4/5 h-[80dvh] my-auto mx-auto bg-black"></div>
+            </div>
           </div>
         </section>
         <Article />
