@@ -11,8 +11,6 @@ import Load from "./loading";
 import Main from "./main";
 
 export default function Home() {
-  const { progress } = useProgress();
-
   return (
     <Fragment>
       <Main />

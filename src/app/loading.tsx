@@ -3,7 +3,7 @@ import { Fragment } from "react"
 import { OrbitControls, useProgress, Preload } from "@react-three/drei";
 
 export default function Load() {
-    const { progress } = useProgress()
+    
     return (
         <Fragment>
             <main className="w-[100dvw] h-auto absolute p-0 m-0 top-0 left-0 overflow-hidden z-[20] bg-white">
