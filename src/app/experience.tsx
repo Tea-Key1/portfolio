@@ -14,7 +14,7 @@ interface Model {
         [key: string]: THREE.Mesh;
     };
     scene: {
-        children: THREE.Mesh[];
+        children: THREE.Mesh[],
     };
 }
 
@@ -22,6 +22,7 @@ export default function Experience() {
     const { viewport } = useThree()
     const width = viewport.width;
     const height = viewport.height;
+
 
     const drone = useLoader(GLTFLoader, "/models/drone_01.glb", (loader): void => {
         const dracoLoader = new DRACOLoader()
@@ -68,11 +69,12 @@ export default function Experience() {
     const dronemat = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ color: "#003366", roughness: 0.5, metalness: 1 }); }, [])
     const box = useMemo<THREE.BoxGeometry>(() => new THREE.BoxGeometry(), [])
     const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }), [])
-    const [electristicGeo, circlegraphGeo, arrowGeo, panelGeo, desktopGeo, mobileGeo, handGeo, redGeo, yellowGeo, whiteGeo, object1Geo, object2Geo, cupGeo]: any = object.map((ob) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[ob].geometry; }, [])))
-    const [electristicPos, circlegraphPos, arrowPos, panelPos, desktopPos, mobilePos, handPos, redPos, yellowPos, whitePos, object1Pos, object2Pos, cupPos]: any = object.map((ob) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[ob].position; }, [])))
-    const iconsGeo: any = icons.map((e) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[e].geometry; }, [])))
-    const iconsPos: any = icons.map((e) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[e].position; }, [])))
-    const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1 }); }, [])
+
+    // const [electristicGeo, circlegraphGeo, arrowGeo, panelGeo, desktopGeo, mobileGeo, handGeo, redGeo, yellowGeo, whiteGeo, object1Geo, object2Geo, cupGeo]: any = object.map((ob) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[ob].geometry; }, [tothink])))
+    // const [electristicPos, circlegraphPos, arrowPos, panelPos, desktopPos, mobilePos, handPos, redPos, yellowPos, whitePos, object1Pos, object2Pos, cupPos]: any = object.map((ob) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[ob].position; }, [tothink])))
+    // const iconsGeo: any = icons.map((e) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[e].geometry; }, [tothink])))
+    // const iconsPos: any = icons.map((e) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[e].position; }, [tothink])))
+    const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1 }); }, [texture])
 
     const tl = gsap.timeline()
     useEffect(() => {
@@ -175,38 +177,38 @@ export default function Experience() {
 
                 <group>
                     <RigidBody type="fixed" friction={2} colliders="cuboid">
-                        <mesh ref={electristic} geometry={electristicGeo} position={electristicPos} /* material={mat} */ >
+                        <mesh ref={electristic} geometry={tothink.nodes["00electristic"].geometry} position={tothink.nodes["00electristic"].position} /* material={mat} */ >
                             <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
                         </mesh>
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh ref={circlegraph} geometry={circlegraphGeo} position={circlegraphPos} material={mat} />
+                        <mesh ref={circlegraph} geometry={tothink.nodes["01circlegraph"].geometry} position={tothink.nodes["01circlegraph"].position} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh ref={arrow} geometry={arrowGeo} position={arrowPos} material={mat} />
+                        <mesh ref={arrow} geometry={tothink.nodes["01arrow"].geometry} position={tothink.nodes["01arrow"].position} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh ref={panel} geometry={panelGeo} position={panelPos} material={mat} />
+                        <mesh ref={panel} geometry={tothink.nodes["02panel"].geometry} position={tothink.nodes["02panel"].position} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh ref={desktop} geometry={desktopGeo} position={desktopPos} material={mat} />
+                        <mesh ref={desktop} geometry={tothink.nodes["02desktop"].geometry} position={tothink.nodes["02desktop"].position} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh ref={mobile} geometry={mobileGeo} position={mobilePos} material={mat} />
+                        <mesh ref={mobile} geometry={tothink.nodes["02mobile"].geometry} position={tothink.nodes["02mobile"].position} material={mat} />
                     </RigidBody>
-                    <mesh geometry={handGeo} position={handPos} material={mat} />
-                    <mesh geometry={redGeo} position={redPos} material={mat} />
-                    <mesh geometry={yellowGeo} position={yellowPos} material={mat} />
-                    <mesh geometry={whiteGeo} position={whitePos} material={mat} />
-                    <mesh ref={object1} geometry={object1Geo} position={object1Pos} material={mat} />
-                    <mesh ref={object2} geometry={object2Geo} position={object2Pos} material={mat} />
-                    <mesh geometry={cupGeo} position={cupPos} material={mat} />
+                    <mesh geometry={tothink.nodes["03hand"].geometry} position={tothink.nodes["03hand"].position} material={mat} />
+                    <mesh geometry={tothink.nodes["03red"].geometry} position={tothink.nodes["03red"].position} material={mat} />
+                    <mesh geometry={tothink.nodes["03yellow"].geometry} position={tothink.nodes["03yellow"].position} material={mat} />
+                    <mesh geometry={tothink.nodes["03white"].geometry} position={tothink.nodes["03white"].position} material={mat} />
+                    <mesh geometry={tothink.nodes["03object1"].geometry} position={tothink.nodes["03object1"].position} material={mat} ref={object1} />
+                    <mesh geometry={tothink.nodes["03object2"].geometry} position={tothink.nodes["03object2"].position} material={mat} ref={object2} />
+                    <mesh geometry={tothink.nodes["03cup"].geometry} position={tothink.nodes["03cup"].position} material={mat} />
 
                     {icons.map((icon, index) => (
                         <Float
                             key={icon}
                         >
-                            <mesh geometry={iconsGeo[index]} position={iconsPos[index]} material={mat} />
+                            <mesh geometry={tothink.nodes[icon].geometry} position={tothink.nodes[icon].position} material={mat} />
                         </Float>
                     ))}
                 </group>
