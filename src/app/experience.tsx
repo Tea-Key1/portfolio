@@ -4,7 +4,7 @@ import { gsap } from "gsap"
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Environment, Float, useGLTF } from "@react-three/drei";
 import { Physics, RigidBody, RapierRigidBody } from "@react-three/rapier";
 
@@ -47,8 +47,6 @@ export default function Experience() {
     const target = new YUKA.GameEntity();
     const dronePhysics = useRef<RapierRigidBody>(null!)
 
-    const tl = gsap.timeline()
-
     const electristic = useRef<THREE.Mesh>(null!)
     const circlegraph = useRef<THREE.Mesh>(null!)
     const arrow = useRef<THREE.Mesh>(null!)
@@ -58,11 +56,25 @@ export default function Experience() {
     const object1 = useRef<THREE.Mesh>(null!)
     const object2 = useRef<THREE.Mesh>(null!)
 
+    const object = [
+        "00electristic", "01circlegraph", "01arrow", "02panel", "02desktop", "02mobile", "03hand",
+        "03red", "03yellow", "03white", "03object1", "03object2", "03cup"
+    ];
     const icons = [
         "04LinkedIn", "04Slack", "04app_store", "04apple", "04css", "04discord", "04dropbox",
         "04github", "04google", "04instagram", "04js", "04twitter", "04youtube"
     ];
+    const propeller = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 1 }); }, [])
+    const dronemat = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ color: "#003366", roughness: 0.5, metalness: 1 }); }, [])
+    const box = useMemo<THREE.BoxGeometry>(() => new THREE.BoxGeometry(), [])
+    const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }), [])
+    const [electristicGeo, circlegraphGeo, arrowGeo, panelGeo, desktopGeo, mobileGeo, handGeo, redGeo, yellowGeo, whiteGeo, object1Geo, object2Geo, cupGeo]: any = object.map((ob) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[ob].geometry; }, [])))
+    const [electristicPos, circlegraphPos, arrowPos, panelPos, desktopPos, mobilePos, handPos, redPos, yellowPos, whitePos, object1Pos, object2Pos, cupPos]: any = object.map((ob) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[ob].position; }, [])))
+    const iconsGeo: any = icons.map((e) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[e].geometry; }, [])))
+    const iconsPos: any = icons.map((e) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[e].position; }, [])))
+    const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1 }); }, [])
 
+    const tl = gsap.timeline()
     useEffect(() => {
         if (circlegraph?.current) {
             tl.fromTo(circlegraph.current.scale, { x: 0, y: 0, z: 0 }, { duration: 0.5, x: 1, y: 1, z: 1 }, 0.25)
@@ -136,62 +148,45 @@ export default function Experience() {
         screw3.current.rotation.y = clock.getElapsedTime() * 20
         screw4.current.rotation.y = clock.getElapsedTime() * 20
         entityManager.update(delta)
-        object1.current.position.y = Math.sin(clock.getElapsedTime()*2)/5
-        object2.current.position.y = Math.sin(clock.getElapsedTime()*2)/5
+        object1.current.position.y = Math.sin(clock.getElapsedTime() * 2) / 5
+        object2.current.position.y = Math.sin(clock.getElapsedTime() * 2) / 5
         dronePhysics.current?.setNextKinematicTranslation({ x: vehicle.position.x, y: 0, z: vehicle.position.z })
     })
 
 
     return (
-        <group >
-
+        <group dispose={null}>
             <group ref={droneRef} matrixAutoUpdate={false} >
-                <mesh geometry={drone.nodes.airscrew1.geometry} ref={screw1} position={[-0.443, 0.1, -0.85]} >
-                    <meshStandardMaterial />
+                <mesh geometry={drone.nodes.airscrew1.geometry} ref={screw1} position={[-0.443, 0.1, -0.85]} material={propeller}>
                 </mesh>
-                <mesh geometry={drone.nodes.airscrew2.geometry} ref={screw2} position={[-0.443, 0.1, 0.85]}>
-                    <meshStandardMaterial />
+                <mesh geometry={drone.nodes.airscrew2.geometry} ref={screw2} position={[-0.443, 0.1, 0.85]} material={propeller}>
                 </mesh>
-                <mesh geometry={drone.nodes.airscrew3.geometry} ref={screw3} position={[0.443, 0.1, 0.85]}>
-                    <meshStandardMaterial />
+                <mesh geometry={drone.nodes.airscrew3.geometry} ref={screw3} position={[0.443, 0.1, 0.85]} material={propeller}>
                 </mesh>
-                <mesh geometry={drone.nodes.airscrew4.geometry} ref={screw4} position={[0.443, 0.1, -0.85]}>
-                    <meshStandardMaterial />
+                <mesh geometry={drone.nodes.airscrew4.geometry} ref={screw4} position={[0.443, 0.1, -0.85]} material={propeller}>
                 </mesh>
-                <mesh geometry={drone.nodes.body1.geometry}>
-                    <meshStandardMaterial />
+                <mesh geometry={drone.nodes.body1.geometry} material={propeller}>
                 </mesh>
-                <mesh geometry={drone.nodes.body2.geometry} >
-                    <meshStandardMaterial color={"#003366"} />
+                <mesh geometry={drone.nodes.body2.geometry} material={dronemat}>
                 </mesh>
-                <mesh geometry={drone.nodes.body3.geometry} position={[0, 0.1, 0]}>
-                    <meshStandardMaterial color={"#003366"} />
+                <mesh geometry={drone.nodes.body3.geometry} position={[0, 0.1, 0]} material={dronemat}>
                 </mesh>
             </group>
 
             <Physics >
-                <group >
-                    <RigidBody mass={0.1} ref={dronePhysics} type="kinematicPosition" linearDamping={3} angularDamping={1} friction={0} restitution={0}
+                <RigidBody mass={0.1} ref={dronePhysics} type="kinematicPosition" >
+                    <mesh geometry={box} material={boxmat} />
+                </RigidBody>
 
-                    >
-                        <mesh >
-                            <boxGeometry />
-                            <meshStandardMaterial transparent opacity={0} />
-                        </mesh>
-                    </RigidBody>
-                </group>
-
-                <mesh ref={targetRef} matrixAutoUpdate={false}>
-                    <boxGeometry args={[1, 1, 1]} />
-                    <meshNormalMaterial transparent opacity={0} />
-                </mesh>
+                <mesh ref={targetRef} matrixAutoUpdate={false} geometry={box} material={boxmat} />
 
                 <group>
                     <RigidBody type="fixed" friction={2} colliders="cuboid">
                         <mesh
                             ref={electristic}
-                            geometry={tothink.nodes["00electristic"].geometry}
-                            position={tothink.nodes["00electristic"].position}
+                            geometry={electristicGeo}
+                            position={electristicPos}
+                        // material={mat}
                         >
                             <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
                         </mesh>
@@ -199,124 +194,97 @@ export default function Experience() {
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
                         <mesh
                             ref={circlegraph}
-                            geometry={tothink.nodes["01circlegraph"].geometry}
-                            position={tothink.nodes["01circlegraph"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
+                            geometry={circlegraphGeo}
+                            position={circlegraphPos}
+                            material={mat}
+                        />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
                         <mesh
                             ref={arrow}
-                            geometry={tothink.nodes["01arrow"].geometry}
-                            position={tothink.nodes["01arrow"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
+                            geometry={arrowGeo}
+                            position={arrowPos}
+                            material={mat}
+                        />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
                         <mesh
                             ref={panel}
-                            geometry={tothink.nodes["02panel"].geometry}
-                            position={tothink.nodes["02panel"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
+                            geometry={panelGeo}
+                            position={panelPos}
+                            material={mat}
+                        />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
                         <mesh
                             ref={desktop}
-                            geometry={tothink.nodes["02desktop"].geometry}
-                            position={tothink.nodes["02desktop"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
+                            geometry={desktopGeo}
+                            position={desktopPos}
+                            material={mat}
+                        />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
                         <mesh
                             ref={mobile}
-                            geometry={tothink.nodes["02mobile"].geometry}
-                            position={tothink.nodes["02mobile"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
+                            geometry={mobileGeo}
+                            position={mobilePos}
+                            material={mat}
+                        />
                     </RigidBody>
-                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
-                        <mesh
-                            geometry={tothink.nodes["03hand"].geometry}
-                            position={tothink.nodes["03hand"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
-                    </RigidBody>
-                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
-                        <mesh
-                            geometry={tothink.nodes["03red"].geometry}
-                            position={tothink.nodes["03red"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
-                    </RigidBody>
-                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
-                        <mesh
-                            geometry={tothink.nodes["03yellow"].geometry}
-                            position={tothink.nodes["03yellow"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
-                    </RigidBody>
-                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
-                        <mesh
-                            geometry={tothink.nodes["03white"].geometry}
-                            position={tothink.nodes["03white"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
-                    </RigidBody>
-                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={object1}
-                            geometry={tothink.nodes["03object1"].geometry}
-                            position={tothink.nodes["03object1"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
-                    </RigidBody>
-                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={object2}
-                            geometry={tothink.nodes["03object2"].geometry}
-                            position={tothink.nodes["03object2"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
-                    </RigidBody>
-                    <RigidBody type="kinematicPosition" friction={2} colliders="cuboid">
-                        <mesh
-                            geometry={tothink.nodes["03cup"].geometry}
-                            position={tothink.nodes["03cup"].position}
-                        >
-                            <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                        </mesh>
-                    </RigidBody>
+                    <mesh
+                        geometry={handGeo}
+                        position={handPos}
+                        material={mat}
+                    />
+                    <mesh
+                        geometry={redGeo}
+                        position={redPos}
+                        material={mat}
+                    />
+                    <mesh
+                        geometry={yellowGeo}
+                        position={yellowPos}
+                        material={mat}
+                    />
+                    <mesh
+                        geometry={whiteGeo}
+                        position={whitePos}
+                        material={mat}
+                    />
+                    <mesh
+                        ref={object1}
+                        geometry={object1Geo}
+                        position={object1Pos}
+                        material={mat}
+                    />
+                    <mesh
+                        ref={object2}
+                        geometry={object2Geo}
+                        position={object2Pos}
+                        material={mat}
+                    />
+                    <mesh
+                        geometry={cupGeo}
+                        position={cupPos}
+                        material={mat}
+                    />
 
-                    {icons.map(icon => (
+                    {icons.map((icon, index) => (
                         <Float
                             key={icon}
                         >
                             <mesh
-                                geometry={tothink.nodes[icon].geometry}
-                                position={tothink.nodes[icon].position}
-                            >
-                                <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
-                            </mesh>
+                                geometry={iconsGeo[index]}
+                                position={iconsPos[index]}
+                                material={mat}
+                            />
                         </Float>
                     ))}
                 </group>
 
             </Physics>
 
-            <Environment preset="forest" />
+            <Environment preset="city" />
         </group>
     )
 }

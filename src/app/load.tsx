@@ -6,7 +6,7 @@ export default function Load() {
     const { progress } = useProgress()
     return (
         <Fragment>
-            <main className="w-[100dvw] h-auto absolute p-0 m-0 top-0 left-0 overflow-hidden">
+            <main className="w-[100dvw] h-auto absolute p-0 m-0 top-0 left-0 overflow-hidden z-[20]">
                 <div className="w-full h-[100dvh] flex justify-center content-center items-center">
                     <div className="">
                         <div className="flex justify-center" aria-label="読み込み中">
