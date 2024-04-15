@@ -69,11 +69,6 @@ export default function Experience() {
     const dronemat = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ color: "#003366", roughness: 0.5, metalness: 1 }); }, [])
     const box = useMemo<THREE.BoxGeometry>(() => new THREE.BoxGeometry(), [])
     const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }), [])
-
-    // const [electristicGeo, circlegraphGeo, arrowGeo, panelGeo, desktopGeo, mobileGeo, handGeo, redGeo, yellowGeo, whiteGeo, object1Geo, object2Geo, cupGeo]: any = object.map((ob) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[ob].geometry; }, [tothink])))
-    // const [electristicPos, circlegraphPos, arrowPos, panelPos, desktopPos, mobilePos, handPos, redPos, yellowPos, whitePos, object1Pos, object2Pos, cupPos]: any = object.map((ob) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[ob].position; }, [tothink])))
-    // const iconsGeo: any = icons.map((e) => (useMemo<THREE.BufferGeometry>(() => { return tothink.nodes[e].geometry; }, [tothink])))
-    // const iconsPos: any = icons.map((e) => (useMemo<THREE.Vector3>(() => { return tothink.nodes[e].position; }, [tothink])))
     const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1 }); }, [texture])
 
     const tl = gsap.timeline()

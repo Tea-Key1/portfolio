@@ -7,7 +7,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useProgress, Preload } from "@react-three/drei";
 import { Fragment, Suspense, useEffect, useRef } from "react";
 import Article from "./article";
-import Load from "./load";
+import Load from "./loading";
 import Main from "./main";
 
 export default function Home() {
@@ -15,9 +15,7 @@ export default function Home() {
 
   return (
     <Fragment>
-      <Suspense fallback={<Load />}>
-        <Main />
-      </Suspense>
+      <Main />
     </Fragment>
   );
 }
