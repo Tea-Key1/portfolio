@@ -157,20 +157,13 @@ export default function Experience() {
     return (
         <group dispose={null}>
             <group ref={droneRef} matrixAutoUpdate={false} >
-                <mesh geometry={drone.nodes.airscrew1.geometry} ref={screw1} position={[-0.443, 0.1, -0.85]} material={propeller}>
-                </mesh>
-                <mesh geometry={drone.nodes.airscrew2.geometry} ref={screw2} position={[-0.443, 0.1, 0.85]} material={propeller}>
-                </mesh>
-                <mesh geometry={drone.nodes.airscrew3.geometry} ref={screw3} position={[0.443, 0.1, 0.85]} material={propeller}>
-                </mesh>
-                <mesh geometry={drone.nodes.airscrew4.geometry} ref={screw4} position={[0.443, 0.1, -0.85]} material={propeller}>
-                </mesh>
-                <mesh geometry={drone.nodes.body1.geometry} material={propeller}>
-                </mesh>
-                <mesh geometry={drone.nodes.body2.geometry} material={dronemat}>
-                </mesh>
-                <mesh geometry={drone.nodes.body3.geometry} position={[0, 0.1, 0]} material={dronemat}>
-                </mesh>
+                <mesh geometry={drone.nodes.airscrew1.geometry} ref={screw1} position={[-0.443, 0.1, -0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.airscrew2.geometry} ref={screw2} position={[-0.443, 0.1, 0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.airscrew3.geometry} ref={screw3} position={[0.443, 0.1, 0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.airscrew4.geometry} ref={screw4} position={[0.443, 0.1, -0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.body1.geometry} material={propeller} />
+                <mesh geometry={drone.nodes.body2.geometry} material={dronemat} />
+                <mesh geometry={drone.nodes.body3.geometry} position={[0, 0.1, 0]} material={dronemat} />
             </group>
 
             <Physics >
@@ -182,112 +175,48 @@ export default function Experience() {
 
                 <group>
                     <RigidBody type="fixed" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={electristic}
-                            geometry={electristicGeo}
-                            position={electristicPos}
-                        // material={mat}
-                        >
+                        <mesh ref={electristic} geometry={electristicGeo} position={electristicPos} /* material={mat} */ >
                             <meshStandardMaterial map={texture} roughness={0.5} metalness={1} />
                         </mesh>
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={circlegraph}
-                            geometry={circlegraphGeo}
-                            position={circlegraphPos}
-                            material={mat}
-                        />
+                        <mesh ref={circlegraph} geometry={circlegraphGeo} position={circlegraphPos} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={arrow}
-                            geometry={arrowGeo}
-                            position={arrowPos}
-                            material={mat}
-                        />
+                        <mesh ref={arrow} geometry={arrowGeo} position={arrowPos} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={panel}
-                            geometry={panelGeo}
-                            position={panelPos}
-                            material={mat}
-                        />
+                        <mesh ref={panel} geometry={panelGeo} position={panelPos} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={desktop}
-                            geometry={desktopGeo}
-                            position={desktopPos}
-                            material={mat}
-                        />
+                        <mesh ref={desktop} geometry={desktopGeo} position={desktopPos} material={mat} />
                     </RigidBody>
                     <RigidBody type="dynamic" friction={2} colliders="cuboid">
-                        <mesh
-                            ref={mobile}
-                            geometry={mobileGeo}
-                            position={mobilePos}
-                            material={mat}
-                        />
+                        <mesh ref={mobile} geometry={mobileGeo} position={mobilePos} material={mat} />
                     </RigidBody>
-                    <mesh
-                        geometry={handGeo}
-                        position={handPos}
-                        material={mat}
-                    />
-                    <mesh
-                        geometry={redGeo}
-                        position={redPos}
-                        material={mat}
-                    />
-                    <mesh
-                        geometry={yellowGeo}
-                        position={yellowPos}
-                        material={mat}
-                    />
-                    <mesh
-                        geometry={whiteGeo}
-                        position={whitePos}
-                        material={mat}
-                    />
-                    <mesh
-                        ref={object1}
-                        geometry={object1Geo}
-                        position={object1Pos}
-                        material={mat}
-                    />
-                    <mesh
-                        ref={object2}
-                        geometry={object2Geo}
-                        position={object2Pos}
-                        material={mat}
-                    />
-                    <mesh
-                        geometry={cupGeo}
-                        position={cupPos}
-                        material={mat}
-                    />
+                    <mesh geometry={handGeo} position={handPos} material={mat} />
+                    <mesh geometry={redGeo} position={redPos} material={mat} />
+                    <mesh geometry={yellowGeo} position={yellowPos} material={mat} />
+                    <mesh geometry={whiteGeo} position={whitePos} material={mat} />
+                    <mesh ref={object1} geometry={object1Geo} position={object1Pos} material={mat} />
+                    <mesh ref={object2} geometry={object2Geo} position={object2Pos} material={mat} />
+                    <mesh geometry={cupGeo} position={cupPos} material={mat} />
 
                     {icons.map((icon, index) => (
                         <Float
                             key={icon}
                         >
-                            <mesh
-                                geometry={iconsGeo[index]}
-                                position={iconsPos[index]}
-                                material={mat}
-                            />
+                            <mesh geometry={iconsGeo[index]} position={iconsPos[index]} material={mat} />
                         </Float>
                     ))}
                 </group>
 
-            </Physics>
+            </Physics >
 
             <Environment preset="city" />
-        </group>
+        </group >
     )
 }
 
-useGLTF.preload('/models/drone_01.glb')
-useGLTF.preload('/models/tothink_02.glb')
+// useGLTF.preload('/models/drone_01.glb')
+// useGLTF.preload('/models/tothink_02.glb')
