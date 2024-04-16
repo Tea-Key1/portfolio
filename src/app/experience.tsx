@@ -22,6 +22,9 @@ export default function Experience() {
     const { viewport } = useThree()
     const width = viewport.width;
     const height = viewport.height;
+    let size = 0.8
+
+
 
 
     const drone = useLoader(GLTFLoader, "/models/drone_01.glb", (loader): void => {
@@ -57,10 +60,10 @@ export default function Experience() {
     const object1 = useRef<THREE.Mesh>(null!)
     const object2 = useRef<THREE.Mesh>(null!)
 
-    const object = [
-        "00electristic", "01circlegraph", "01arrow", "02panel", "02desktop", "02mobile", "03hand",
-        "03red", "03yellow", "03white", "03object1", "03object2", "03cup"
-    ];
+    // const object = [
+    //     "00electristic", "01circlegraph", "01arrow", "02panel", "02desktop", "02mobile", "03hand",
+    //     "03red", "03yellow", "03white", "03object1", "03object2", "03cup"
+    // ];
     const icons = [
         "04LinkedIn", "04Slack", "04app_store", "04apple", "04css", "04discord", "04dropbox",
         "04github", "04google", "04instagram", "04js", "04twitter", "04youtube"
@@ -68,7 +71,7 @@ export default function Experience() {
     const propeller = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 1 }); }, [])
     const dronemat = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ color: "#003366", roughness: 0.5, metalness: 1 }); }, [])
     const box = useMemo<THREE.BoxGeometry>(() => new THREE.BoxGeometry(), [])
-    const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }), [])
+    const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 100 }), [])
     const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1 }); }, [texture])
 
     const tl = gsap.timeline()
@@ -117,8 +120,8 @@ export default function Experience() {
         const mobileX = (touchX / windowWidth) * 2 - 1;
         const mobileY = 1 - (touchY / windowHeight) * 2;
 
-        const mx: number = (mobileX * width / 2);
-        const my: number = (-mobileY * height / 2) * 1.4
+        const mx: number = (mobileX * width / 2) * size;
+        const my: number = (-mobileY * height / 2) * 1.4 * size
 
         target.position.set(mx, 0, my)
     });
@@ -133,13 +136,14 @@ export default function Experience() {
         const pcX = (moveX / windowWidth) * 2 - 1;
         const pcY = 1 - (moveY / windowHeight) * 2;
 
-        const px: number = (pcX * width / 2);
-        const py: number = (-pcY * height / 2) * 1.4;
+        const px: number = (pcX * width / 2) / size;
+        const py: number = (-pcY * height / 2) * 1.4 / size;
 
         target.position.set(px, 0, py)
     })
 
     useFrame(({ clock }, delta) => {
+
         screw1.current.rotation.y = clock.getElapsedTime() * 20
         screw2.current.rotation.y = clock.getElapsedTime() * 20
         screw3.current.rotation.y = clock.getElapsedTime() * 20
@@ -147,12 +151,12 @@ export default function Experience() {
         entityManager.update(delta)
         object1.current.position.y = Math.sin(clock.getElapsedTime() * 2) / 5
         object2.current.position.y = Math.sin(clock.getElapsedTime() * 2) / 5
-        dronePhysics.current?.setNextKinematicTranslation({ x: vehicle.position.x, y: 0, z: vehicle.position.z })
+        dronePhysics.current?.setNextKinematicTranslation({ x: vehicle.position.x * size, y: 0, z: vehicle.position.z * size })
     })
 
 
     return (
-        <group dispose={null}>
+        <group dispose={null} scale={size}>
             <group ref={droneRef} matrixAutoUpdate={false} >
                 <mesh geometry={drone.nodes.airscrew1.geometry} ref={screw1} position={[-0.443, 0.1, -0.85]} material={propeller} />
                 <mesh geometry={drone.nodes.airscrew2.geometry} ref={screw2} position={[-0.443, 0.1, 0.85]} material={propeller} />
@@ -210,10 +214,7 @@ export default function Experience() {
 
             </Physics >
 
-            <Environment preset="city" />
+            <Environment preset="forest" />
         </group >
     )
 }
-
-// useGLTF.preload('/models/drone_01.glb')
-// useGLTF.preload('/models/tothink_02.glb')
