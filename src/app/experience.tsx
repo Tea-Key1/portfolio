@@ -4,7 +4,7 @@ import { gsap } from "gsap"
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Environment, Float, useGLTF } from "@react-three/drei";
 import { Physics, RigidBody, RapierRigidBody } from "@react-three/rapier";
 
@@ -22,7 +22,16 @@ export default function Experience() {
     const { viewport } = useThree()
     const width = viewport.width;
     const height = viewport.height;
-    let size = 0.8
+    const windowWidth = window.innerWidth;
+    const [size,setSize] = useState(0.8)
+    
+    useEffect(()=>{
+        if(windowWidth <=640){
+            setSize(0.38)
+        }else{
+            setSize(0.9)
+        }
+    },[windowWidth])
 
 
 
@@ -71,7 +80,7 @@ export default function Experience() {
     const propeller = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ roughness: 0.5, metalness: 1 }); }, [])
     const dronemat = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ color: "#003366", roughness: 0.5, metalness: 1 }); }, [])
     const box = useMemo<THREE.BoxGeometry>(() => new THREE.BoxGeometry(), [])
-    const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 100 }), [])
+    const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }), [])
     const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1 }); }, [texture])
 
     const tl = gsap.timeline()
@@ -120,8 +129,8 @@ export default function Experience() {
         const mobileX = (touchX / windowWidth) * 2 - 1;
         const mobileY = 1 - (touchY / windowHeight) * 2;
 
-        const mx: number = (mobileX * width / 2) * size;
-        const my: number = (-mobileY * height / 2) * 1.4 * size
+        const mx: number = (mobileX * width / 2) / size;
+        const my: number = (-mobileY * height / 2) * 1.4 / size
 
         target.position.set(mx, 0, my)
     });

@@ -11,8 +11,7 @@ export default function Load() {
                 <div className="w-full h-[100dvh] flex justify-center content-center items-center">
                     <div className="">
                         <div className="flex justify-center" aria-label="読み込み中">
-                            <div className="animate-spin h-8 w-8 border border-blue-300 rounded-xl flex flex-col content-end">
-                                <div className={`h-[${progress}%] w-full bg-blue-300`} ></div>
+                            <div className="animate-spin h-8 w-8 border border-blue-300 rounded-xl flex justify-center items-center">
                             </div>
                         </div>
                     </div>
