@@ -23,15 +23,15 @@ export default function Experience() {
     const width = viewport.width;
     const height = viewport.height;
     const windowWidth = window.innerWidth;
-    const [size,setSize] = useState(0.8)
-    
-    useEffect(()=>{
-        if(windowWidth <=640){
+    const [size, setSize] = useState(0.8)
+
+    useEffect(() => {
+        if (windowWidth <= 640) {
             setSize(0.38)
-        }else{
+        } else {
             setSize(0.9)
         }
-    },[windowWidth])
+    }, [windowWidth])
 
 
 
@@ -81,7 +81,7 @@ export default function Experience() {
     const dronemat = useMemo<THREE.Material>(() => { return new THREE.MeshStandardMaterial({ color: "#003366", roughness: 0.5, metalness: 1 }); }, [])
     const box = useMemo<THREE.BoxGeometry>(() => new THREE.BoxGeometry(), [])
     const boxmat = useMemo<THREE.Material>(() => new THREE.MeshBasicMaterial({ transparent: true, opacity: 0 }), [])
-    const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1 }); }, [texture])
+    const mat = useMemo<THREE.MeshStandardMaterial>(() => { return new THREE.MeshStandardMaterial({ map: texture, roughness: 0.5, metalness: 1, transparent: true }); }, [texture])
 
     const tl = gsap.timeline()
     useEffect(() => {
@@ -99,6 +99,9 @@ export default function Experience() {
         }
         if (mobile?.current) {
             tl.fromTo(mobile.current.scale, { x: 0, y: 0, z: 0 }, { duration: 0.5, x: 1, y: 1, z: 1 }, 0.5)
+        }
+        if (mat) {
+            tl.fromTo(mat, { opacity: 0 }, { duration: 1, opacity: 1 }, 0)
         }
     }, [])
 
@@ -167,13 +170,13 @@ export default function Experience() {
     return (
         <group dispose={null} scale={size}>
             <group ref={droneRef} matrixAutoUpdate={false} >
-                <mesh geometry={drone.nodes.airscrew1.geometry} ref={screw1} position={[-0.443, 0.1, -0.85]} material={propeller} />
-                <mesh geometry={drone.nodes.airscrew2.geometry} ref={screw2} position={[-0.443, 0.1, 0.85]} material={propeller} />
-                <mesh geometry={drone.nodes.airscrew3.geometry} ref={screw3} position={[0.443, 0.1, 0.85]} material={propeller} />
-                <mesh geometry={drone.nodes.airscrew4.geometry} ref={screw4} position={[0.443, 0.1, -0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.airscrew1.geometry} ref={screw1} position={[-0.443, 0.1/size, -0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.airscrew2.geometry} ref={screw2} position={[-0.443, 0.1/size, 0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.airscrew3.geometry} ref={screw3} position={[0.443, 0.1/size, 0.85]} material={propeller} />
+                <mesh geometry={drone.nodes.airscrew4.geometry} ref={screw4} position={[0.443, 0.1/size, -0.85]} material={propeller} />
                 <mesh geometry={drone.nodes.body1.geometry} material={propeller} />
                 <mesh geometry={drone.nodes.body2.geometry} material={dronemat} />
-                <mesh geometry={drone.nodes.body3.geometry} position={[0, 0.1, 0]} material={dronemat} />
+                <mesh geometry={drone.nodes.body3.geometry} position={[0, 0.3, 0]} material={dronemat} />
             </group>
 
             <Physics >
@@ -223,7 +226,7 @@ export default function Experience() {
 
             </Physics >
 
-            <Environment preset="forest" />
+            <Environment preset="city" />
         </group >
     )
 }
