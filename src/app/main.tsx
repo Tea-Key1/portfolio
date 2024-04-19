@@ -18,6 +18,7 @@ export default function Main() {
     // }, [])
     return (
         <Fragment>
+            <Suspense fallback={<Load />} />
             <AnimatePresence>
                 <motion.main className={`w-full h-auto p-0 m-0 top-0 left-0`}
                     initial={{ opacity: 0 }}
@@ -48,8 +49,8 @@ export default function Main() {
                                 delay: 0.5
                             }}
                         >
-                            <div id="menu" className={`w-80  h-[80dvh] absolute top-[10dvh] right-[2dvw] bg-white bg-opacity-35 rounded-xl`}></div>
-                            <div id="toggle" className={`w-20  h-[100dvh] absolute top-0 left-0 bg-white bg-opacity-35 content-center`} >
+                            <div id="menu" className={`w-80  h-[80dvh] absolute top-[10dvh] right-[2dvw] bg-black bg-opacity-35 rounded-xl`}></div>
+                            <div id="toggle" className={`w-20  h-[100dvh] absolute top-0 left-0 bg-black bg-opacity-35 content-center`} >
                                 <div className="w-4/5 h-[80dvh] mx-auto bg-blue bg-opacity-35 border-2 text-transparent">text</div>
                             </div>
                         </motion.div>
@@ -57,6 +58,7 @@ export default function Main() {
                     <Article />
                 </motion.main>
             </AnimatePresence>
+            <Suspense />
         </Fragment>
     )
 }
